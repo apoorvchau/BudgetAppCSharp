@@ -66,10 +66,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ActualBudgetDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ActualDash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActualDash.Designer.cs">
+      <DependentUpon>ActualDash.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExpectedBudgetDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExpectedBudgetDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ExpectedDash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExpectedDash.Designer.cs">
+      <DependentUpon>ExpectedDash.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -79,6 +91,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ActualDash.resx">
+      <DependentUpon>ActualDash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExpectedDash.resx">
+      <DependentUpon>ExpectedDash.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
