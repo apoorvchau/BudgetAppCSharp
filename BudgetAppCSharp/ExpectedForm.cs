@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace BudgetAppCSharp
 {
-    public partial class ExpectedDash : Form
+    public partial class ExpectedForm : Form
     {
-        public ExpectedDash()
+        public ExpectedForm()
         {
             InitializeComponent();
         }
 
-        private void ExpectedDash_Load(object sender, EventArgs e)
+        private void ExpectedForm_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'expectedBudgetDataSet.ExpectedBudget' table. You can move, or remove it, as needed.
             this.expectedBudgetTableAdapter.Fill(this.expectedBudgetDataSet.ExpectedBudget);

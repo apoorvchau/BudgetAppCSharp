@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace BudgetAppCSharp
 {
-    public partial class ActualDash : Form
+    public partial class DeleteForm : Form
     {
-        public ActualDash()
+        public DeleteForm()
         {
             InitializeComponent();
         }

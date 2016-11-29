@@ -279,6 +279,8 @@ namespace BudgetAppCSharp {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class ExpectedBudgetDataTable : global::System.Data.TypedTableBase<ExpectedBudgetRow> {
             
+            private global::System.Data.DataColumn columnYear;
+            
             private global::System.Data.DataColumn _columnWeek__;
             
             private global::System.Data.DataColumn columnExpense;
@@ -318,6 +320,14 @@ namespace BudgetAppCSharp {
             protected ExpectedBudgetDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn YearColumn {
+                get {
+                    return this.columnYear;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -389,9 +399,10 @@ namespace BudgetAppCSharp {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ExpectedBudgetRow AddExpectedBudgetRow(int _Week__, string Expense, double Price, System.DateTime Add_Date) {
+            public ExpectedBudgetRow AddExpectedBudgetRow(int Year, int _Week__, string Expense, double Price, System.DateTime Add_Date) {
                 ExpectedBudgetRow rowExpectedBudgetRow = ((ExpectedBudgetRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        Year,
                         _Week__,
                         Expense,
                         Price,
@@ -403,9 +414,9 @@ namespace BudgetAppCSharp {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ExpectedBudgetRow FindBy_Week__(int _Week__) {
+            public ExpectedBudgetRow FindByYear(int Year) {
                 return ((ExpectedBudgetRow)(this.Rows.Find(new object[] {
-                            _Week__})));
+                            Year})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -425,6 +436,7 @@ namespace BudgetAppCSharp {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnYear = base.Columns["Year"];
                 this._columnWeek__ = base.Columns["Week #"];
                 this.columnExpense = base.Columns["Expense"];
                 this.columnPrice = base.Columns["Price"];
@@ -434,6 +446,8 @@ namespace BudgetAppCSharp {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnYear = new global::System.Data.DataColumn("Year", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnYear);
                 this._columnWeek__ = new global::System.Data.DataColumn("Week #", typeof(int), null, global::System.Data.MappingType.Element);
                 this._columnWeek__.ExtendedProperties.Add("Generator_ColumnVarNameInTable", "_columnWeek__");
                 this._columnWeek__.ExtendedProperties.Add("Generator_UserColumnName", "Week #");
@@ -445,9 +459,10 @@ namespace BudgetAppCSharp {
                 this.columnAdd_Date = new global::System.Data.DataColumn("Add Date", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAdd_Date);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this._columnWeek__}, true));
+                                this.columnYear}, true));
+                this.columnYear.AllowDBNull = false;
+                this.columnYear.Unique = true;
                 this._columnWeek__.AllowDBNull = false;
-                this._columnWeek__.Unique = true;
                 this.columnExpense.AllowDBNull = false;
                 this.columnExpense.MaxLength = 50;
                 this.columnPrice.AllowDBNull = false;
@@ -590,6 +605,17 @@ namespace BudgetAppCSharp {
             internal ExpectedBudgetRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
                 this.tableExpectedBudget = ((ExpectedBudgetDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int Year {
+                get {
+                    return ((int)(this[this.tableExpectedBudget.YearColumn]));
+                }
+                set {
+                    this[this.tableExpectedBudget.YearColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -796,6 +822,7 @@ namespace BudgetAppCSharp.ExpectedBudgetDataSetTableAdapters {
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "ExpectedBudget";
+            tableMapping.ColumnMappings.Add("Year", "Year");
             tableMapping.ColumnMappings.Add("Week #", "Week #");
             tableMapping.ColumnMappings.Add("Expense", "Expense");
             tableMapping.ColumnMappings.Add("Price", "Price");
@@ -803,39 +830,41 @@ namespace BudgetAppCSharp.ExpectedBudgetDataSetTableAdapters {
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[ExpectedBudget] WHERE (([Week #] = @Original_Week_#) AND ([Exp" +
-                "ense] = @Original_Expense) AND ([Price] = @Original_Price) AND ([Add Date] = @Or" +
-                "iginal_Add_Date))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[ExpectedBudget] WHERE (([Year] = @Original_Year) AND ([Week #]" +
+                " = @Original_Week_#) AND ([Expense] = @Original_Expense) AND ([Price] = @Origina" +
+                "l_Price) AND ([Add Date] = @Original_Add_Date))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Year", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Year", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Week_#", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Week #", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Expense", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Expense", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Price", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Price", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Add_Date", global::System.Data.SqlDbType.SmallDateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Add Date", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[ExpectedBudget] ([Week #], [Expense], [Price], [Add Date]) VAL" +
-                "UES (@Week_#, @Expense, @Price, @Add_Date);\r\nSELECT [Week #], Expense, Price, [A" +
-                "dd Date] FROM ExpectedBudget WHERE ([Week #] = @Week__)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[ExpectedBudget] ([Year], [Week #], [Expense], [Price], [Add Da" +
+                "te]) VALUES (@Year, @Week_#, @Expense, @Price, @Add_Date);\r\nSELECT Year, [Week #" +
+                "], Expense, Price, [Add Date] FROM ExpectedBudget WHERE (Year = @Year)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Year", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Year", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Week_#", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Week #", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Expense", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Expense", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Add_Date", global::System.Data.SqlDbType.SmallDateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Add Date", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Week__", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Week #", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[ExpectedBudget] SET [Week #] = @Week_#, [Expense] = @Expense, [Price] = @Price, [Add Date] = @Add_Date WHERE (([Week #] = @Original_Week_#) AND ([Expense] = @Original_Expense) AND ([Price] = @Original_Price) AND ([Add Date] = @Original_Add_Date));
-SELECT [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE ([Week #] = @Week__)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[ExpectedBudget] SET [Year] = @Year, [Week #] = @Week_#, [Expense] = @Expense, [Price] = @Price, [Add Date] = @Add_Date WHERE (([Year] = @Original_Year) AND ([Week #] = @Original_Week_#) AND ([Expense] = @Original_Expense) AND ([Price] = @Original_Price) AND ([Add Date] = @Original_Add_Date));
+SELECT Year, [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE (Year = @Year)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Year", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Year", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Week_#", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Week #", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Expense", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Expense", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Add_Date", global::System.Data.SqlDbType.SmallDateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Add Date", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Year", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Year", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Week_#", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Week #", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Expense", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Expense", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Price", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Price", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Add_Date", global::System.Data.SqlDbType.SmallDateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Add Date", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Week__", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Week #", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -851,7 +880,7 @@ SELECT [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE ([Week #] 
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT [Week #], Expense, Price, [Add Date] FROM dbo.ExpectedBudget";
+            this._commandCollection[0].CommandText = "SELECT Year, [Week #], Expense, Price, [Add Date] FROM dbo.ExpectedBudget";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -912,16 +941,17 @@ SELECT [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE ([Week #] 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int _Original_Week__, string Original_Expense, double Original_Price, System.DateTime Original_Add_Date) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(_Original_Week__));
+        public virtual int Delete(int Original_Year, int _Original_Week__, string Original_Expense, double Original_Price, System.DateTime Original_Add_Date) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Year));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(_Original_Week__));
             if ((Original_Expense == null)) {
                 throw new global::System.ArgumentNullException("Original_Expense");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_Expense));
+                this.Adapter.DeleteCommand.Parameters[2].Value = ((string)(Original_Expense));
             }
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((double)(Original_Price));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((System.DateTime)(Original_Add_Date));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((double)(Original_Price));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((System.DateTime)(Original_Add_Date));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -942,17 +972,17 @@ SELECT [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE ([Week #] 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int _Week__, string Expense, double Price, System.DateTime Add_Date, int Week__) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(_Week__));
+        public virtual int Insert(int Year, int _Week__, string Expense, double Price, System.DateTime Add_Date) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(Year));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(_Week__));
             if ((Expense == null)) {
                 throw new global::System.ArgumentNullException("Expense");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(Expense));
+                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Expense));
             }
-            this.Adapter.InsertCommand.Parameters[2].Value = ((double)(Price));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((System.DateTime)(Add_Date));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((int)(Week__));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((double)(Price));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(Add_Date));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -973,26 +1003,27 @@ SELECT [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE ([Week #] 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int _Week__, string Expense, double Price, System.DateTime Add_Date, int _Original_Week__, string Original_Expense, double Original_Price, System.DateTime Original_Add_Date, int Week__) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(_Week__));
+        public virtual int Update(int Year, int _Week__, string Expense, double Price, System.DateTime Add_Date, int Original_Year, int _Original_Week__, string Original_Expense, double Original_Price, System.DateTime Original_Add_Date) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(Year));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(_Week__));
             if ((Expense == null)) {
                 throw new global::System.ArgumentNullException("Expense");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(Expense));
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Expense));
             }
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((double)(Price));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((System.DateTime)(Add_Date));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(_Original_Week__));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((double)(Price));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((System.DateTime)(Add_Date));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_Year));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(_Original_Week__));
             if ((Original_Expense == null)) {
                 throw new global::System.ArgumentNullException("Original_Expense");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((string)(Original_Expense));
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((string)(Original_Expense));
             }
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((double)(Original_Price));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((System.DateTime)(Original_Add_Date));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Week__));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((double)(Original_Price));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((System.DateTime)(Original_Add_Date));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1013,8 +1044,8 @@ SELECT [Week #], Expense, Price, [Add Date] FROM ExpectedBudget WHERE ([Week #] 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Expense, double Price, System.DateTime Add_Date, int _Original_Week__, string Original_Expense, double Original_Price, System.DateTime Original_Add_Date) {
-            return this.Update(_Original_Week__, Expense, Price, Add_Date, _Original_Week__, Original_Expense, Original_Price, Original_Add_Date, _Original_Week__);
+        public virtual int Update(int _Week__, string Expense, double Price, System.DateTime Add_Date, int Original_Year, int _Original_Week__, string Original_Expense, double Original_Price, System.DateTime Original_Add_Date) {
+            return this.Update(Original_Year, _Week__, Expense, Price, Add_Date, Original_Year, _Original_Week__, Original_Expense, Original_Price, Original_Add_Date);
         }
     }
     
